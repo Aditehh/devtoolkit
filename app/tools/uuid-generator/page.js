@@ -1,6 +1,37 @@
+"use client"
+import { AlignRight } from 'lucide-react'
 import React from 'react'
+import { useState } from 'react'
+import { v4 } from 'uuid'
+import v1 from 'uuid'
+import v7 from 'uuid'
+
+
+
+
+
 
 const page = () => {
+
+    const [selectedVersion, setselectedVersion] = useState("")
+
+    const handleGenerate = () => {
+
+        if (selectedVersion === "v1") {
+            console.log(selectedVersion)
+        }
+        if (selectedVersion === "v4") {
+            console.log(selectedVersion)
+        }
+        if (selectedVersion === "v7") {
+            console.log(selectedVersion)
+        }
+    }
+
+
+
+
+
     return (
         <main className="max-w-3xl mx-auto px-6 pt-24 pb-16">
             <h1 className="text-3xl font-bold text-slate-900 mb-3 text-center">
@@ -19,12 +50,16 @@ const page = () => {
                 </label>
 
                 <select
+                    value={selectedVersion}
+                    onChange={(e) => setselectedVersion(e.target.value)}
                     id="uuidVersion"
                     className="w-120 px-4 py-2 rounded-xl border border-gray-300 bg-white text-gray-800 font-semibold shadow-sm hover:shadow-md hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-200 ease-in-out cursor-pointer mx-auto block appearance-none"
                 >
+                    <option value="">Version?</option>
                     <option value="v1">🔹 Version 1</option>
                     <option value="v4">💠 Version 4 (Recommended)</option>
                     <option value="v7">⚡ Version 7</option>
+
                 </select>
 
 
@@ -33,6 +68,7 @@ const page = () => {
                 <div className="mt-8 flex justify-center">
                     <button
                         className="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2 rounded-lg font-medium transition"
+                        onClick={() => handleGenerate()}
                     >
                         Generate UUID
                     </button>
