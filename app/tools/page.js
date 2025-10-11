@@ -30,6 +30,12 @@ const tools = [
     description: "Ask your doubt, let us clear it",
     slug:"code-explainer",
     emoji: "🤔"
+  },
+  {
+    name: "Regex-tester",
+    description: "Test regular expressions",
+    slug: "regex-tester",
+    emoji: "⚙️"
   }
 ];
 
