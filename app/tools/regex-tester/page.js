@@ -6,10 +6,24 @@ const page = () => {
 
     const [pattern, setpattern] = useState("") //regex pattern
     const [inputText, setInputText] = useState("") //text to test
+    const [matches, setMatches] = useState([])
 
 
 
     const handletesting = () => {
+        try {
+            //1. find last slash to seperate pattern and flags
+            const lastslashindex = pattern.lastIndexOf("/");
+
+            // 2. extract patterns and flags
+            const regexPattern = pattern.slice(1, lastslashindex);
+            const flags = pattern.slice(lastslashindex + 1);
+
+            // 3. create regex object
+            const regex = new RegExp(regexPattern, flags)
+
+            const foundMatches = inputText.match(regex) || [];
+        }
 
     }
 
