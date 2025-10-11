@@ -2,9 +2,10 @@
 import { AlignRight } from 'lucide-react'
 import React from 'react'
 import { useState } from 'react'
-import { v4 } from 'uuid'
-import v1 from 'uuid'
-import v7 from 'uuid'
+import { v1 as uuidv1, v4 as uuidv4, v7 as uuidv7 } from 'uuid';
+
+
+
 
 
 
@@ -14,17 +15,30 @@ import v7 from 'uuid'
 const page = () => {
 
     const [selectedVersion, setselectedVersion] = useState("")
+    const [uuidGenerated, setuuidGenerated] = useState("")
 
     const handleGenerate = () => {
 
         if (selectedVersion === "v1") {
             console.log(selectedVersion)
+            const uuid1 = uuidv1();
+            console.log(uuid1)
+            setuuidGenerated(uuid1)
         }
         if (selectedVersion === "v4") {
             console.log(selectedVersion)
+            const uuid4 = uuidv4();
+            console.log(uuid4)
+            setuuidGenerated(uuid4)
+
+
         }
         if (selectedVersion === "v7") {
             console.log(selectedVersion)
+            const uuid7 = uuidv7();
+            console.log(uuid7)
+            setuuidGenerated(uuid7)
+
         }
     }
 
@@ -73,6 +87,16 @@ const page = () => {
                         Generate UUID
                     </button>
                 </div>
+
+
+                {/* <h3 className='mt-4'>Your required UUID is:</h3> */}
+
+
+                {uuidGenerated &&
+                    <p className="mt-4 font-mono text-lg text-gray-700">{uuidGenerated}</p>}
+
+
+
             </div>
         </main>
 
