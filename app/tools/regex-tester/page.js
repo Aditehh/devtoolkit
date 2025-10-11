@@ -13,6 +13,10 @@ const page = () => {
 
     }
 
+    const handleClear = () => {
+        setInputText("")
+        setpattern("")
+    }
 
 
 
@@ -67,7 +71,9 @@ const page = () => {
                         className="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2 rounded-lg font-medium transition">
                         Test Regex
                     </button>
-                    <button className="bg-gray-200 hover:bg-gray-300 text-gray-800 px-6 py-2 rounded-lg font-medium transition">
+                    <button
+                        onClick={() => handleClear()}
+                        className="bg-gray-200 hover:bg-gray-300 text-gray-800 px-6 py-2 rounded-lg font-medium transition">
                         Clear
                     </button>
                 </div>
