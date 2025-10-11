@@ -15,23 +15,17 @@ const page = () => {
                     htmlFor="uuidVersion"
                     className="block text-slate-700 font-medium mb-3 text-lg"
                 >
-                    Select UUID Version
+                    Select preferred UUID Version
                 </label>
 
                 <select
-    id="uuidVersion"
-    className="
-        w-120 px-4 py-2 rounded-xl border border-gray-300 bg-white text-gray-800 font-semibold
-        shadow-sm hover:shadow-md hover:border-gray-400
-        focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500
-        transition-all duration-200 ease-in-out cursor-pointer mx-auto block
-        appearance-none
-    "
->
-    <option value="v1">🔹 Version 1</option>
-    <option value="v4">💠 Version 4 (Recommended)</option>
-    <option value="v7">⚡ Version 7</option>
-</select>
+                    id="uuidVersion"
+                    className="w-120 px-4 py-2 rounded-xl border border-gray-300 bg-white text-gray-800 font-semibold shadow-sm hover:shadow-md hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-200 ease-in-out cursor-pointer mx-auto block appearance-none"
+                >
+                    <option value="v1">🔹 Version 1</option>
+                    <option value="v4">💠 Version 4 (Recommended)</option>
+                    <option value="v7">⚡ Version 7</option>
+                </select>
 
 
 
