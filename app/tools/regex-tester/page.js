@@ -1,4 +1,5 @@
 "use client"
+import { convertSegmentPathToStaticExportFilename } from 'next/dist/shared/lib/segment-cache/segment-value-encoding'
 import React from 'react'
 import { useState } from 'react'
 
@@ -23,6 +24,14 @@ const page = () => {
             const regex = new RegExp(regexPattern, flags)
 
             const foundMatches = inputText.match(regex) || [];
+
+            setMatches(foundMatches);
+
+            console.log(foundMatches)
+        }
+        catch (error) {
+            console.error("Invalid regex:", error);
+            setMatches([])
         }
 
     }
