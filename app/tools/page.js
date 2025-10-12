@@ -35,7 +35,8 @@ const tools = [
     name: "Regex-tester",
     description: "Test regular expressions",
     slug: "regex-tester",
-    emoji: "⚙️"
+    emoji: "⚙️",
+    
   }
 ];
 
