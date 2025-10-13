@@ -1,6 +1,13 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Navabr from "@/Components/Navabr";
+import { ThemeProvider } from "./contexts/ThemeContext";
+
+
+
+
+
+
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -23,9 +30,12 @@ export default function RootLayout({ children }) {
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-slate-50 text-slate-800`}
       >
         <Navabr />
-        <main className="min-h-screen">
-          {children}
-        </main>
+        <ThemeProvider>
+          <main className="min-h-screen">
+            {children}
+          </main>
+        </ThemeProvider>
+
       </body>
     </html>
   );
