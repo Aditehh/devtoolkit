@@ -28,7 +28,7 @@ const tools = [
   {
     name: "Explain my Code",
     description: "Ask your doubt, let us clear it",
-    slug:"code-explainer",
+    slug: "code-explainer",
     emoji: "🤔"
   },
   {
@@ -36,7 +36,13 @@ const tools = [
     description: "Test regular expressions",
     slug: "regex-tester",
     emoji: "⚙️",
-    
+
+  },
+  {
+    name: "Password Generator",
+    description: "Generate strong and unique passwords",
+    slug: "password-generator",
+    emoji: "⚙️",
   }
 ];
 

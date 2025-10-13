@@ -1,13 +1,11 @@
 "use client";
-import { useContext } from "react";
-import { ThemeContext } from "@/app/contexts/ThemeContext";
 import Link from "next/link";
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
-  const { theme, setTheme } = useContext(ThemeContext)
+  
 
   return (
     <nav className="fixed top-0 left-0 w-full z-50 border-b border-slate-200 bg-white/70 backdrop-blur-xl supports-[backdrop-filter]:bg-white/60">
@@ -31,11 +29,7 @@ export default function Navbar() {
           </a>
         </div>
 
-        <button
-          onClick={() => setTheme(theme === "light" ? "dark" : "light")}
-        >
-          {theme === "light" ? "dark" : "light"}
-        </button>
+      
 
         {/* Mobile Button */}
         <button
