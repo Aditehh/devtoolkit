@@ -86,6 +86,20 @@ const Page = () => {
                     </div>
                 </div>
 
+                <div dangerouslySetInnerHTML={{ __html: result }} className="p-3 bg-gray-50 rounded-md border mt-4 text-gray-800" />
+
+
+                 <div className="w-full max-w-3xl mb-4">
+                    <label className="block text-gray-700 font-medium mb-2">Matches:</label>
+                    <div className="w-full min-h-[80px] p-4 border border-gray-300 rounded-lg bg-white text-gray-800">
+                        {matches.length > 0 ? (
+                            <p>{matches.join(", ")}</p>
+                        ) : (
+                            <p className="text-gray-400">Matches will appear here...</p>
+                        )}
+                    </div>
+                </div>
+
                 {/* Buttons */}
                 <div className="flex space-x-4">
                     <button
