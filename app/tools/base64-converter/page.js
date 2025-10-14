@@ -13,7 +13,7 @@ const Base64Tool = () => {
             console.log(encoded)
             setResult(encoded)
         }
-        if(mode == "decode") {
+        if (mode == "decode") {
             const decoded = atob(text);
             console.log(decoded)
             setResult(decoded)
@@ -37,8 +37,8 @@ const Base64Tool = () => {
                 <button
                     onClick={() => setMode("encode")}
                     className={`px-6 py-2 rounded-lg font-medium transition ${mode === "encode"
-                            ? "bg-indigo-600 text-white"
-                            : "bg-white border border-gray-300 text-gray-800 hover:bg-gray-100"
+                        ? "bg-indigo-600 text-white"
+                        : "bg-white border border-gray-300 text-gray-800 hover:bg-gray-100"
                         }`}
                 >
                     Encode
@@ -46,8 +46,8 @@ const Base64Tool = () => {
                 <button
                     onClick={() => setMode("decode")}
                     className={`px-6 py-2 rounded-lg font-medium transition ${mode === "decode"
-                            ? "bg-indigo-600 text-white"
-                            : "bg-white border border-gray-300 text-gray-800 hover:bg-gray-100"
+                        ? "bg-indigo-600 text-white"
+                        : "bg-white border border-gray-300 text-gray-800 hover:bg-gray-100"
                         }`}
                 >
                     Decode
@@ -90,6 +90,7 @@ const Base64Tool = () => {
                 <textarea
                     rows="5"
                     readOnly
+                    value={result || ""}
                     placeholder="Your result will appear here..."
                     className="w-full px-4 py-3 border border-gray-300 rounded-lg bg-gray-100 text-gray-800 focus:outline-none resize-none"
                 />
