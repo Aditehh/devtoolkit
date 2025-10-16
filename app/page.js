@@ -16,12 +16,25 @@ export default function Home() {
           Format JSON, generate UUIDs, convert timestamps, and more — all in one elegant, lightweight platform.
         </p>
 
-        <a
-          href="/tools"
-          className="mt-8 inline-block bg-gray-800 text-white px-6 py-3 rounded-xl text-lg font-medium hover:bg-black transition-all hover:scale-[1.02]"
-        >
-          Explore Tools
-        </a>
+        <div className="flex flex-row gap-4">
+
+
+          <a
+            href="/tools"
+            className="mt-8 inline-block bg-gray-800 text-white px-6 py-3 rounded-xl text-lg font-medium hover:bg-black transition-all hover:scale-[1.02]"
+          >
+            Explore Tools
+          </a>
+
+          <a
+            href="/login"
+            className="mt-8 inline-block bg-gray-800 text-white px-6 py-3 rounded-xl text-lg font-medium hover:bg-black transition-all hover:scale-[1.02]"
+          >
+            Get Started
+          </a>
+
+
+        </div>
 
         {/* if it directly takes the users to the tools page when will the login page come and what would it even be for if an user can use the tools without loggin in */}
 
