@@ -14,9 +14,14 @@ const Base64Tool = () => {
             setResult(encoded)
         }
         if (mode == "decode") {
-            const decoded = atob(text);
-            console.log(decoded)
-            setResult(decoded)
+            try {
+                const decoded = atob(text);
+                console.log(decoded)
+                setResult(decoded)
+            } catch (decoded) {
+                console.log(error)
+
+            }
         }
 
         // setResult("")
@@ -25,10 +30,10 @@ const Base64Tool = () => {
     }
 
     const handleclear = () => {
-      setResult("")
-      settext("")
+        setResult("")
+        settext("")
     }
-    
+
 
 
 
@@ -84,13 +89,13 @@ const Base64Tool = () => {
             {/* Action Buttons */}
             <div className="flex gap-4 mb-4">
                 <button
-                    onClick={() =>handleSubmit()}
+                    onClick={() => handleSubmit()}
                     className="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2 rounded-lg font-medium transition">
                     {mode === "encode" ? "Encode" : "Decode"}
                 </button>
                 <button
-                onClick={()=>handleclear()}
-                className="bg-gray-200 hover:bg-gray-300 text-gray-800 px-6 py-2 rounded-lg font-medium transition">
+                    onClick={() => handleclear()}
+                    className="bg-gray-200 hover:bg-gray-300 text-gray-800 px-6 py-2 rounded-lg font-medium transition">
                     Clear
                 </button>
             </div>
