@@ -10,16 +10,17 @@ const Base64Tool = () => {
     const handleSubmit = () => {
         if (mode === "encode") {
             const encoded = btoa(text);
+
             console.log(encoded)
             setResult(encoded)
         }
-        if (mode == "decode") {
+        if (mode === "decode") {
             try {
                 const decoded = atob(text);
                 console.log(decoded)
                 setResult(decoded)
-            } catch (decoded) {
-                console.log(error)
+            } catch (error) {
+                alert(error)
 
             }
         }
@@ -84,6 +85,35 @@ const Base64Tool = () => {
                     }
                     className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 resize-none text-gray-800"
                 />
+
+                <label className="flex items-center gap-2 cursor-pointer select-none text-gray-800 font-medium">
+                    <input
+                        type="checkbox"
+                        className="peer hidden"
+                    />
+                    <span
+                        className="w-5 h-5 rounded-md border-2 border-gray-300 flex items-center justify-center
+               peer-checked:bg-indigo-600 peer-checked:border-indigo-600
+               transition-all duration-200"
+                    >
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 20 20"
+                            fill="white"
+                            className="w-3 h-3 opacity-0 peer-checked:opacity-100 transition-opacity duration-150"
+                        >
+                            <path
+                                fillRule="evenodd"
+                                d="M16.707 5.293a1 1 0 00-1.414 0L8 12.586 4.707 9.293a1 1 0 00-1.414 1.414l4 4a1 1 0 001.414 0l8-8a1 1 0 000-1.414z"
+                                clipRule="evenodd"
+                            />
+                        </svg>
+                    </span>
+                    <span>URL-safe encoding</span>
+                </label>
+
+
+
             </div>
 
             {/* Action Buttons */}
