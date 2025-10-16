@@ -5,25 +5,74 @@ const Base64Tool = () => {
     const [mode, setMode] = useState("encode");
     const [result, setResult] = useState("");
     const [text, settext] = useState("");
+    const [isURLsafe, setIsURLsafe] = useState(false)
+
+
 
 
     const handleSubmit = () => {
-        if (mode === "encode") {
-            const encoded = btoa(text);
+        if (isURLsafe === true) {
+            if (mode === "encode") {
+                let encoded = btoa(text);
 
-            console.log(encoded)
-            setResult(encoded)
-        }
-        if (mode === "decode") {
-            try {
-                const decoded = atob(text);
-                console.log(decoded)
-                setResult(decoded)
-            } catch (error) {
-                alert(error)
+                // If user checks "URL-safe"
+                encoded = encoded
+                    .replace(/\+/g, '-')  // Replace + with -
+                    .replace(/\//g, '_')  // Replace / with _
+                    .replace(/=+$/, '');  // Remove trailing =
 
+                console.log(encoded)
+                setResult(encoded)
             }
+            if (mode === "decode") {
+                try {
+                    let safeText = text
+                        .replace(/-/g, '+')   // Replace - back to +
+                        .replace(/_/g, '/');  // Replace _ back to /
+
+                    while (safeText.length % 4 !== 0) {
+                        safeText += '='; // Re-add padding if needed
+                    }
+
+                    const decoded = atob(safeText);
+
+
+
+
+                    console.log(decoded)
+                    setResult(decoded)
+                } catch (error) {
+                    alert(error)
+
+                }
+            }
+
+
+
+
         }
+        else {
+            if (mode === "encode") {
+                const encoded = btoa(text);
+
+                console.log(encoded)
+                setResult(encoded)
+            }
+            if (mode === "decode") {
+                try {
+                    const decoded = atob(text);
+                    console.log(decoded)
+                    setResult(decoded)
+                } catch (error) {
+                    alert(error)
+
+                }
+            }
+
+
+        }
+
+
 
         // setResult("")
         // settext("")
@@ -86,12 +135,18 @@ const Base64Tool = () => {
                     className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 resize-none text-gray-800"
                 />
 
-                <label className="flex items-center gap-2 cursor-pointer select-none text-gray-800 font-medium">
+                <label
+
+                    className="flex items-center gap-2 cursor-pointer select-none text-gray-800 font-medium">
                     <input
+                        // onChange={()=>handleCheck()}
+                        checked={isURLsafe}
+                        onChange={() => setIsURLsafe(!isURLsafe)}
                         type="checkbox"
                         className="peer hidden"
                     />
                     <span
+
                         className="w-5 h-5 rounded-md border-2 border-gray-300 flex items-center justify-center
                peer-checked:bg-indigo-600 peer-checked:border-indigo-600
                transition-all duration-200"
