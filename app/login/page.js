@@ -92,6 +92,8 @@
 "use client";
 import React from "react";
 import { useSession, signIn, signOut } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 
 
@@ -102,6 +104,16 @@ import Image from "next/image";
 export default function LoginPage() {
 
   const { data: session, status } = useSession();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (session) {
+      if (status === "authenticated") {
+        router.push("/dashboard")
+      }
+    }
+  }, [status, router])
+
 
   if (session) {
     return (

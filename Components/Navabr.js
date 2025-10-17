@@ -20,7 +20,15 @@ export default function Navbar() {
 
         {/* Desktop Navigation */}
         <div className="hidden md:flex items-center gap-6 text-sm font-medium">
-          <Link href="/" className="hover:text-indigo-500 transition-colors">Home</Link>
+
+          {!session &&
+
+            <Link href="/" className="hover:text-indigo-500 transition-colors">Home</Link>
+          }
+          {session &&
+            <Link href="/dashboard" className="hover:text-indigo-500 transition-colors">Dashboard</Link>
+
+          }
           <Link href="/tools" className="hover:text-indigo-500 transition-colors">Tools</Link>
           <Link href="/about" className="hover:text-indigo-500 transition-colors">About</Link>
 

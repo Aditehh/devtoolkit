@@ -18,25 +18,31 @@ const handler = NextAuth({
             clientSecret: process.env.GITHUB_SECRET,
         }),
 
+
     ],
-    // callbacks: {
-    //     async signIn({ user, account, profile, email, credentials }) {
-    //         if (account.provider == "github") {
-    //             // connect to the database
-    //             // const client = await mongoose.connect();
-    //             await connectToDB();
+    callbacks: {
+        async signIn({ user, account }) {
+            if (account.provider === "github") {
+                await connectToDB();
 
-    //             // check if the user is already in the database
-    //             const currentUser = await User.findOne({ email: user.email });
-    //             if (!currentUser) {
-    //                 await User.create({ email: user.email });
-    //             }
+                const existingUser = await User.findOne({ email: user.email })
 
-    //         }
-    //         return true;
-    //     },
+                if (!existingUser) {
+                    await User.create({
+                        email: user.email,
+                    })
+                }
+            }
+            return true;
+        },
 
-    // }
+        async session({ session }) {
+            await connectToDB();
+            const dbUser = await User.findOne({ email: session.user.email });
+            session.user.id = dbUser._id.toString();
+            return session;
+        },
+    },
 
 })
 
