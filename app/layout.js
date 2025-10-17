@@ -1,6 +1,9 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Navabr from "@/Components/Navabr";
+import SessionWrapper from "@/Components/SessionWrapper";
+import Footer from "@/Components/Footer";
+
 
 
 
@@ -28,12 +31,16 @@ export default function RootLayout({ children }) {
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-slate-50 text-slate-800`}
       >
-        <Navabr />
+        <SessionWrapper>
 
-        <main className="min-h-screen">
-          {children}
-        </main>
+          <Navabr />
 
+          <main className="min-h-screen">
+            {children}
+          </main>
+
+          <Footer />
+        </SessionWrapper>
       </body>
     </html>
   );

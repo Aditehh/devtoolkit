@@ -1,8 +1,12 @@
 import NextAuth from "next-auth"
 import GithubProvider from "next-auth/providers/github"
+import User from "@/models/User";
+import mongoose from "mongoose";
 
 
-export const authOptions = {
+
+const handler = NextAuth({
+
     // Configure one or more authentication providers
     providers: [
         GithubProvider({
@@ -14,10 +18,13 @@ export const authOptions = {
     ],
     callbacks: {
         async signIn({ user, account, profile, email, credentials }) {
-            
+            if(account.provider == "github") {
+                alert("connectted via github")
+            }
         },
-        
-    }
-}
 
-export default NextAuth(authOptions)
+    }
+
+})
+
+export { handler as GET, handler as POST };
