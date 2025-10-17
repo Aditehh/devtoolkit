@@ -90,8 +90,9 @@
 
 
 "use client";
-import { useSession,signIn, signOut } from "next-auth/react";
-import Github from "next-auth/providers/github";
+import React from "react";
+import { useSession, signIn, signOut } from "next-auth/react";
+
 
 
 
@@ -99,6 +100,23 @@ import Image from "next/image";
 // import { Github, Twitter } from "lucide-react";
 
 export default function LoginPage() {
+
+  const { data: session, status } = useSession();
+
+  if (session) {
+    return (
+      <>
+        Signed in as {session.user.email} <br />
+        <button onClick={() => signOut()}>Sign out</button>
+      </>
+    )
+  }
+
+
+
+
+
+
   return (
     <div className="flex h-screen">
       {/* Left side - Login form */}
@@ -114,6 +132,7 @@ export default function LoginPage() {
           <div className="space-y-4 mt-8">
             {/* GitHub Login */}
             <button
+              onClick={() => signIn("github")}
               className="w-full flex items-center justify-center gap-3 px-4 py-3 border border-slate-300 dark:border-slate-700 rounded-xl text-slate-800 dark:text-slate-100 hover:bg-slate-50 dark:hover:bg-slate-800 transition"
             >
               {/* <Github size={20} /> */}

@@ -26,12 +26,12 @@ export default function Home() {
             Explore Tools
           </a>
 
-          <a
+          {/* <a
             href="/login"
             className="mt-8 inline-block bg-gray-800 text-white px-6 py-3 rounded-xl text-lg font-medium hover:bg-black transition-all hover:scale-[1.02]"
           >
             Get Started
-          </a>
+          </a> */}
 
 
         </div>

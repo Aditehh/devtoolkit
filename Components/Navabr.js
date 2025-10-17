@@ -2,10 +2,13 @@
 import Link from "next/link";
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
+import { useSession, signIn, signOut } from "next-auth/react";
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
-  
+  const { data: session } = useSession()
+
+
 
   return (
     <nav className="fixed top-0 left-0 w-full z-50 border-b border-slate-200 bg-white/70 backdrop-blur-xl supports-[backdrop-filter]:bg-white/60">
@@ -20,6 +23,7 @@ export default function Navbar() {
           <Link href="/" className="hover:text-indigo-500 transition-colors">Home</Link>
           <Link href="/tools" className="hover:text-indigo-500 transition-colors">Tools</Link>
           <Link href="/about" className="hover:text-indigo-500 transition-colors">About</Link>
+
           <a
             href="https://github.com/yourusername/devtoolkit"
             target="_blank"
@@ -27,9 +31,25 @@ export default function Navbar() {
           >
             GitHub ↗
           </a>
+          {session && <button
+            onClick={() => signOut("github")}
+          >
+            logout
+          </button>}
+          {!session &&
+
+            <Link href={"/login"}>
+              <button
+                className="px-4 py-2 rounded-lg font-medium  bg-indigo-600  text-white  hover:bg-indigo-700 focus:outline-none focus:ring-2  focus:ring-indigo-500 focus:ring-offset-1 transition-all  duration-200  ease-in-out"
+              >
+                Login
+              </button>
+
+            </Link>
+          }
         </div>
 
-      
+
 
         {/* Mobile Button */}
         <button
