@@ -109,7 +109,7 @@ export default function LoginPage() {
   useEffect(() => {
     if (session) {
       if (status === "authenticated") {
-        router.push("/dashboard")
+        router.push("/complete-profile")
       }
     }
   }, [status, router])
