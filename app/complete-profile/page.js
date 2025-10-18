@@ -33,20 +33,36 @@ export default function CompleteProfilePage() {
 
 
 
-    const handleSaveProfile = () => {
-
-
-
-
-
-
-
+    const handleSaveProfile = async (e) => {
         e.preventDefault();
 
+        const profileData = { username, bio, profileImage }
+        try {
+            const response = await fetch("/api/profile", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(profileData),
+                credentials: "include",
+            });
 
-        setusername("")
-        setprofileImage(null)
-        setBio("")
+            if (response.ok) {
+                const result = await response.json();
+                console.log("profile saved:", result);
+
+                setusername("")
+                setBio("")
+                setprofileImage(null)
+            }
+            else {
+                console.error("Failed to save profile")
+            }
+
+
+
+        } catch (error) {
+            console.error("Rrror", error)
+
+        }
     }
 
 
