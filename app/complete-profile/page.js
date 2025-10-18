@@ -4,6 +4,8 @@ import React from "react";
 import { useState } from "react";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 
 
@@ -12,26 +14,34 @@ import Image from "next/image";
 
 export default function CompleteProfilePage() {
     const { data: session, status } = useSession();
+    const router = useRouter();
 
     const [username, setusername] = useState("")
     const [bio, setBio] = useState("")
     const [profileImage, setprofileImage] = useState(null)
 
+    useEffect(() => {
+        if (!session) {
+            if (status === "unauthenticated") {
+                router.push('/login')
+            }
+        }
+    }, [status, router])
+
+
+
 
 
 
     const handleSaveProfile = () => {
+
+
+
+
+
+
+
         e.preventDefault();
-
-
-
-
-
-
-
-
-
-
 
 
         setusername("")
