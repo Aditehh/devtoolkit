@@ -11,5 +11,5 @@ const ProfileSchema = new Schema({
 
 });
 
-const Profile = models.Profile || mongoose.model("Profile", ProfileSchema);
+let Profile = models.Profile || mongoose.model("Profile", ProfileSchema);
 export default Profile;

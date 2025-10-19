@@ -1,11 +1,11 @@
 "use client";
-
 import React from "react";
 import { useState } from "react";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
+
 
 
 
@@ -21,17 +21,46 @@ export default function CompleteProfilePage() {
     const [profileImage, setprofileImage] = useState(null)
 
     useEffect(() => {
+        if (status === "authenticated") {
+            const checkProfile = async () => {
+                try {
+                    const res = await fetch("/api/profile/check", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ email: session.user.email }),
+                        credentials: "include",
+                    });
+
+                    const data = await res.json();
+
+                    if (data.profileExists) {
+                        router.push("/dashboard");
+                    } else {
+                        console.log("Profile not found. Show form.");
+                    }
+
+                } catch (err) {
+                    console.error("Error checking profile:", err);
+                }
+            };
+
+            checkProfile();
+        }
+    }, [status, session]);
+
+
+    // const checkProfileData = { email: session.user.email }
+
+
+
+
+    useEffect(() => {
         if (!session) {
             if (status === "unauthenticated") {
                 router.push('/login')
             }
         }
     }, [status, router])
-
-
-
-
-
 
     const handleSaveProfile = async (e) => {
         e.preventDefault();
@@ -49,20 +78,25 @@ export default function CompleteProfilePage() {
                 const result = await response.json();
                 console.log("profile saved:", result);
 
-                setusername("")
-                setBio("")
-                setprofileImage(null)
+
+                setTimeout(() => {
+                    setusername("")
+                    setBio("")
+                    setprofileImage(null)
+                }, 3000);
             }
             else {
                 console.error("Failed to save profile")
             }
-
-
-
         } catch (error) {
-            console.error("Rrror", error)
-
+            console.error("Error", error)
         }
+
+
+
+        setTimeout(() => {
+            router.push("/dashboard")
+        }, 3000);
     }
 
 
