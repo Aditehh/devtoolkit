@@ -1,29 +1,30 @@
 import { connectToDB } from "@/lib/connectToDB";
 import Profile from "@/models/Profile";
+import { NextResponse } from "next/server";
 
-export async function GET(req, { params }) {
+export async function GET(request, { params }) {
     try {
         await connectToDB();
 
-        const { username } = params;
+        const { username } = params; // no await
 
         if (!username) {
-            return new Response(JSON.stringify({ error: "username required" }))
+            return NextResponse.json({ error: "Username required" }, { status: 400 });
         }
 
         const profile = await Profile.findOne({ username });
 
         if (!profile) {
-            return new Response(JSON.stringify({ error: "Profile not found" }), {
-                status: 404
-            })
+            return NextResponse.json({ error: "Profile not found" }, { status: 404 });
         }
 
-        return new Response(JSON.stringify(profile), { status: 200 })
+        // ✅ Send clean JSON
+        return NextResponse.json(profile, { status: 200 });
     } catch (error) {
-        console.error("Error fetching profile", error);
-        return new Response(JSON.stringify({ error: "server error" }), {
-            status: 500
-        })
+        console.error("Error fetching profile:", error);
+        return NextResponse.json(
+            { error: "Server error", details: error.message },
+            { status: 500 }
+        );
     }
 }

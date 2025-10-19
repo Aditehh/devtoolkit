@@ -29,7 +29,7 @@ export default function CompleteProfilePage() {
                     const data = await res.json();
 
                     if (data.profileExists) {
-                        router.push("/[username]");
+                        router.push(`/${session.user.userrname}`);
                     } else {
                         console.log("Profile not found. Show form.");
                     }
@@ -60,39 +60,29 @@ export default function CompleteProfilePage() {
     const handleSaveProfile = async (e) => {
         e.preventDefault();
 
-        const profileData = { username, bio, profileImage }
         try {
             const response = await fetch("/api/profile", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(profileData),
-                credentials: "include",
+                body: JSON.stringify({ username, bio, profileImage }),
             });
 
-            if (response.ok) {
-                const result = await response.json();
-                console.log("profile saved:", result);
+            const result = await response.json();
 
+            if (!response.ok) {
+                console.error("Failed to save profile:", result);
+                return;
+            }
 
-                setTimeout(() => {
-                    setusername("")
-                    setBio("")
-                    setprofileImage(null)
-                }, 3000);
-            }
-            else {
-                console.error("Failed to save profile")
-            }
+            console.log("Profile saved:", result);
+
+            // Redirect to the user's profile page
+            router.push(`/${result.username || username}`);
         } catch (error) {
-            console.error("Error", error)
+            console.error("Error saving profile:", error);
         }
+    };
 
-
-
-        setTimeout(() => {
-            router.push("/[username]")
-        }, 3000);
-    }
 
 
 

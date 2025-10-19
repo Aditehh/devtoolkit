@@ -20,7 +20,7 @@ export async function POST(req) {
     }
 
     else {
-        return new Response({ "profileExists": false })
+        return new Response(JSON.stringify({ "profileExists": false }))
     }
 
 }
