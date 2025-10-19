@@ -7,11 +7,6 @@ import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
 
-
-
-
-
-
 export default function CompleteProfilePage() {
     const { data: session, status } = useSession();
     const router = useRouter();
