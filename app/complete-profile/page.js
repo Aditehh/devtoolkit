@@ -29,7 +29,7 @@ export default function CompleteProfilePage() {
                     const data = await res.json();
 
                     if (data.profileExists) {
-                        router.push("/dashboard");
+                        router.push("/[username]");
                     } else {
                         console.log("Profile not found. Show form.");
                     }
@@ -90,7 +90,7 @@ export default function CompleteProfilePage() {
 
 
         setTimeout(() => {
-            router.push("/dashboard")
+            router.push("/[username]")
         }, 3000);
     }
 
