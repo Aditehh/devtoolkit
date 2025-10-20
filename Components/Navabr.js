@@ -15,31 +15,31 @@ export default function Navbar() {
   const dropdownRef = useRef(null);
 
   // Fetch profile data
-  useEffect(() => {
-    if (status === "authenticated" && session?.user?.email) {
-      const fetchProfile = async () => {
-        try {
-          const res = await fetch(`/api/profile?email=${session.user.email}`, {
-            method: "GET",
-            headers: { "Content-Type": "application/json" },
-            cache: "no-store",
-          });
+  // useEffect(() => {
+  //   if (status === "authenticated" && session?.user?.email) {
+  //     const fetchProfile = async () => {
+  //       try {  x
+  //         const res = await fetch(`/api/profile?email=${session.user.email}`, {
+  //           method: "GET",
+  //           headers: { "Content-Type": "application/json" },
+  //           cache: "no-store",
+  //         });
 
-          if (!res.ok) {
-            console.error("Error fetching profile:", await res.text());
-            return;
-          }
+  //         if (!res.ok) {
+  //           console.error("Error fetching profile:", await res.text());
+  //           return;
+  //         }
 
-          const data = await res.json();
-          setProfile(data);
-        } catch (err) {
-          console.error("Fetch error:", err);
-        }
-      };
+  //         const data = await res.json();
+  //         setProfile(data);
+  //       } catch (err) {
+  //         console.error("Fetch error:", err);
+  //       }
+  //     };
 
-      fetchProfile();
-    }
-  }, [session, status]);
+  //     fetchProfile();
+  //   }
+  // }, [session, status]);
 
 
 
@@ -72,7 +72,7 @@ export default function Navbar() {
         </div>
 
         {/* Right: Profile Button */}
-        {status === "authenticated" && profile && (
+        {status === "authenticated"  && (
           <div className="relative" ref={dropdownRef}>
             <button
               onClick={() => setOpen(!open)}
