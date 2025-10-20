@@ -1,112 +1,123 @@
 "use client";
-import Link from "next/link";
-import { useState, useEffect } from "react";
-import { Menu, X, ChevronDown } from "lucide-react";
+
+import { useState, useRef, useEffect } from "react";
 import { useSession, signOut } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import Image from "next/image";
+import Link from "next/link";
+import { ChevronDown } from "lucide-react";
 
 export default function Navbar() {
-  const [open, setOpen] = useState(false);
   const { data: session, status } = useSession();
+  const router = useRouter();
   const [profile, setProfile] = useState(null);
+  const [open, setOpen] = useState(false);
+  const dropdownRef = useRef(null);
 
+  // Fetch profile data
   useEffect(() => {
-    if (status === "authenticated" && session?.user?.username) {
-      async function fetchProfile() {
+    if (status === "authenticated" && session?.user?.email) {
+      const fetchProfile = async () => {
         try {
-          const res = await fetch(`/api/profile/${session.user.username}`, {
+          const res = await fetch(`/api/profile?email=${session.user.email}`, {
             method: "GET",
             headers: { "Content-Type": "application/json" },
             cache: "no-store",
           });
 
           if (!res.ok) {
-            const errorText = await res.text();
-            console.error("Error fetching profile:", errorText);
-            throw new Error(`HTTP error: ${res.status}`);
+            console.error("Error fetching profile:", await res.text());
+            return;
           }
 
           const data = await res.json();
           setProfile(data);
-        } catch (error) {
-          console.error("Failed to fetch profile:", error);
+        } catch (err) {
+          console.error("Fetch error:", err);
         }
-      }
+      };
 
       fetchProfile();
     }
   }, [session, status]);
 
+
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
   return (
-    <nav className="fixed top-0 left-0 w-full z-50 border-b border-slate-200 bg-white/70 backdrop-blur-xl supports-[backdrop-filter]:bg-white/60">
-      <div className="max-w-6xl mx-auto flex items-center justify-between px-6 py-4">
-        <Link href="/" className="text-xl font-semibold tracking-tight text-slate-900">
-          DevToolkit<span className="text-indigo-500">⚙️</span>
+    <nav className="fixed top-0 w-full z-50 border-b border-slate-200/40 bg-white/60 backdrop-blur-md">
+      <div className="max-w-7xl mx-auto px-6 py-3 flex items-center justify-between">
+        {/* Left: Logo */}
+        <Link href="/" className="text-lg md:text-xl font-semibold tracking-tight text-slate-900 hover:text-indigo-500 transition">
+          dev<span className="text-indigo-500">Toolkit</span>
         </Link>
 
-        <div className="hidden md:flex items-center gap-6 text-sm font-medium">
-          <Link href="/tools" className="hover:text-indigo-500 transition-colors">Tools</Link>
-          <Link href="/about" className="hover:text-indigo-500 transition-colors">About</Link>
-          <a
-            href="https://github.com/yourusername/devtoolkit"
-            target="_blank"
-            className="text-slate-700 hover:text-indigo-500 transition-colors"
-          >
-            GitHub↗
-          </a>
-
-          {session ? (
-            <div className="relative">
-              <button
-                onClick={() => setOpen(!open)}
-                className="flex items-center gap-2 px-3 py-1 bg-white/80 hover:bg-white shadow-sm border border-gray-200 rounded-xl transition-all duration-200"
-              >
-                <img
-                  src={profile?.avatar || "/default-avatar.png"}
-                  alt="profile"
-                  className="w-8 h-8 rounded-full border border-gray-300 object-cover"
-                />
-                <ChevronDown
-                  className={`w-4 h-4 text-gray-600 transition-transform duration-200 ${open ? "rotate-180" : ""}`}
-                />
-              </button>
-
-              {open && (
-                <div className="absolute right-0 mt-2 w-40 bg-white border border-gray-100 rounded-xl shadow-md py-1 z-50">
-                  {profile && (
-                    <Link
-                      href={`/${profile.username}`}
-                      className="block px-4 py-2 text-gray-700 hover:bg-gray-50 transition"
-                    >
-                      Profile
-                    </Link>
-                  )}
-                  <Link
-                    href="/settings"
-                    className="block px-4 py-2 text-gray-700 hover:bg-gray-50 transition"
-                  >
-                    Settings
-                  </Link>
-                  <button
-                    onClick={() => signOut()}
-                    className="block w-full text-left px-4 py-2 text-red-500 hover:bg-red-50 transition"
-                  >
-                    Logout
-                  </button>
-                </div>
-              )}
-            </div>
-          ) : (
-            <Link href="/login">
-              <button className="px-4 py-2 rounded-lg font-medium bg-indigo-600 text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-1 transition-all duration-200 ease-in-out">
-                Login
-              </button>
-            </Link>
-          )}
+        {/* Center: Links */}
+        <div className="hidden md:flex items-center gap-6 text-sm text-slate-700 font-medium">
+          <Link href="/" className="hover:text-slate-900 transition">Home</Link>
+          <Link href="/tools" className="hover:text-slate-900 transition">Tools</Link>
+          <Link href="/projects" className="hover:text-slate-900 transition">Projects</Link>
+          <Link href="/community" className="hover:text-slate-900 transition">Community</Link>
+          <Link href="/blog" className="hover:text-slate-900 transition">Blog</Link>
         </div>
 
-        <button className="md:hidden text-slate-700" onClick={() => setOpen(!open)}>
-          {open ? <X size={22} /> : <Menu size={22} />}
-        </button>
+        {/* Right: Profile Button */}
+        {status === "authenticated" && profile && (
+          <div className="relative" ref={dropdownRef}>
+            <button
+              onClick={() => setOpen(!open)}
+              className="flex items-center gap-2 rounded-full bg-white/70 border border-slate-200 px-3 py-1.5 shadow-sm hover:shadow-md hover:bg-white transition-all duration-200"
+            >
+              <Image
+                src={profile?.profileImage || "/default-avatar.png"}
+                alt="Profile"
+                width={32}
+                height={32}
+                className="rounded-full object-cover"
+              />
+
+              <ChevronDown className={`w-4 h-4 text-slate-500 transition-transform duration-200 ${open ? "rotate-180" : ""}`} />
+            </button>
+
+            {open && (
+              <div className="absolute right-0 mt-2 w-44 bg-white/90 backdrop-blur-md border border-slate-200/60 rounded-2xl shadow-lg py-2 animate-fadeIn">
+                <Link href={`/${profile?.username || ""}`} className="block px-4 py-2 text-slate-700 hover:bg-slate-100 rounded-lg transition">
+                  {profile?.username || "Profile"}
+                </Link>
+
+                <Link href="/settings" className="block px-4 py-2 text-slate-700 hover:bg-slate-100 rounded-lg transition">
+                  Settings
+                </Link>
+                <hr className="border-slate-200/50 my-1" />
+                <button
+                  onClick={() => signOut({ callbackUrl: "/" })}
+                  className="block w-full text-left px-4 py-2 text-red-500 hover:bg-red-50 rounded-lg transition"
+                >
+                  Logout
+                </button>
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* Login Button */}
+        {status === "unauthenticated" && (
+          <Link href="/login">
+            <button className="px-4 py-2 rounded-lg font-medium bg-indigo-600 text-white hover:bg-indigo-700 transition">
+              Login
+            </button>
+          </Link>
+        )}
       </div>
     </nav>
   );
