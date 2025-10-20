@@ -1,88 +1,112 @@
 "use client";
 import Link from "next/link";
-import { useState } from "react";
-import { Menu, X } from "lucide-react";
-import { useSession, signIn, signOut } from "next-auth/react";
+import { useState, useEffect } from "react";
+import { Menu, X, ChevronDown } from "lucide-react";
+import { useSession, signOut } from "next-auth/react";
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
-  const { data: session } = useSession()
+  const { data: session, status } = useSession();
+  const [profile, setProfile] = useState(null);
 
+  useEffect(() => {
+    if (status === "authenticated" && session?.user?.username) {
+      async function fetchProfile() {
+        try {
+          const res = await fetch(`/api/profile/${session.user.username}`, {
+            method: "GET",
+            headers: { "Content-Type": "application/json" },
+            cache: "no-store",
+          });
 
+          if (!res.ok) {
+            const errorText = await res.text();
+            console.error("Error fetching profile:", errorText);
+            throw new Error(`HTTP error: ${res.status}`);
+          }
+
+          const data = await res.json();
+          setProfile(data);
+        } catch (error) {
+          console.error("Failed to fetch profile:", error);
+        }
+      }
+
+      fetchProfile();
+    }
+  }, [session, status]);
 
   return (
     <nav className="fixed top-0 left-0 w-full z-50 border-b border-slate-200 bg-white/70 backdrop-blur-xl supports-[backdrop-filter]:bg-white/60">
       <div className="max-w-6xl mx-auto flex items-center justify-between px-6 py-4">
-        {/* Logo */}
         <Link href="/" className="text-xl font-semibold tracking-tight text-slate-900">
           DevToolkit<span className="text-indigo-500">⚙️</span>
         </Link>
 
-        {/* Desktop Navigation */}
         <div className="hidden md:flex items-center gap-6 text-sm font-medium">
-
-          {!session &&
-
-            <Link href="/" className="hover:text-indigo-500 transition-colors">Home</Link>
-          }
-          {session &&
-            <Link href="/dashboard" className="hover:text-indigo-500 transition-colors">Dashboard</Link>
-
-          }
           <Link href="/tools" className="hover:text-indigo-500 transition-colors">Tools</Link>
           <Link href="/about" className="hover:text-indigo-500 transition-colors">About</Link>
-
           <a
             href="https://github.com/yourusername/devtoolkit"
             target="_blank"
             className="text-slate-700 hover:text-indigo-500 transition-colors"
           >
-            GitHub ↗
+            GitHub↗
           </a>
-          {session && <button
-            onClick={() => signOut("github")}
-          >
-            logout
-          </button>}
-          {!session &&
 
-            <Link href={"/login"}>
+          {session ? (
+            <div className="relative">
               <button
-                className="px-4 py-2 rounded-lg font-medium  bg-indigo-600  text-white  hover:bg-indigo-700 focus:outline-none focus:ring-2  focus:ring-indigo-500 focus:ring-offset-1 transition-all  duration-200  ease-in-out"
+                onClick={() => setOpen(!open)}
+                className="flex items-center gap-2 px-3 py-1 bg-white/80 hover:bg-white shadow-sm border border-gray-200 rounded-xl transition-all duration-200"
               >
-                Login
+                <img
+                  src={profile?.avatar || "/default-avatar.png"}
+                  alt="profile"
+                  className="w-8 h-8 rounded-full border border-gray-300 object-cover"
+                />
+                <ChevronDown
+                  className={`w-4 h-4 text-gray-600 transition-transform duration-200 ${open ? "rotate-180" : ""}`}
+                />
               </button>
 
+              {open && (
+                <div className="absolute right-0 mt-2 w-40 bg-white border border-gray-100 rounded-xl shadow-md py-1 z-50">
+                  {profile && (
+                    <Link
+                      href={`/${profile.username}`}
+                      className="block px-4 py-2 text-gray-700 hover:bg-gray-50 transition"
+                    >
+                      Profile
+                    </Link>
+                  )}
+                  <Link
+                    href="/settings"
+                    className="block px-4 py-2 text-gray-700 hover:bg-gray-50 transition"
+                  >
+                    Settings
+                  </Link>
+                  <button
+                    onClick={() => signOut()}
+                    className="block w-full text-left px-4 py-2 text-red-500 hover:bg-red-50 transition"
+                  >
+                    Logout
+                  </button>
+                </div>
+              )}
+            </div>
+          ) : (
+            <Link href="/login">
+              <button className="px-4 py-2 rounded-lg font-medium bg-indigo-600 text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-1 transition-all duration-200 ease-in-out">
+                Login
+              </button>
             </Link>
-          }
+          )}
         </div>
 
-
-
-        {/* Mobile Button */}
-        <button
-          className="md:hidden text-slate-700"
-          onClick={() => setOpen(!open)}
-        >
+        <button className="md:hidden text-slate-700" onClick={() => setOpen(!open)}>
           {open ? <X size={22} /> : <Menu size={22} />}
         </button>
-
-        {/* Mobile Dropdown */}
-        {open && (
-          <div className="absolute top-16 left-0 w-full bg-white/95 border-t border-slate-200 shadow-lg flex flex-col items-center py-5 gap-3 md:hidden text-sm">
-            <Link href="/" onClick={() => setOpen(false)}>Home</Link>
-            <Link href="/tools" onClick={() => setOpen(false)}>Tools</Link>
-            <Link href="/about" onClick={() => setOpen(false)}>About</Link>
-            <a
-              href="https://github.com/yourusername/devtoolkit"
-              target="_blank"
-              onClick={() => setOpen(false)}
-              className="text-indigo-600 font-medium"
-            >
-              GitHub ↗
-            </a>
-          </div>
-        )}
       </div>
     </nav>
   );

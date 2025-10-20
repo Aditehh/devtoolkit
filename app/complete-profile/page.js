@@ -22,14 +22,14 @@ export default function CompleteProfilePage() {
                     const res = await fetch("/api/profile/check", {
                         method: "POST",
                         headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify({ email: session.user.email }),
+                        body: JSON.stringify({ email: session.user.email , username}),
                         credentials: "include",
                     });
 
                     const data = await res.json();
 
                     if (data.profileExists) {
-                        router.push(`/${session.user.userrname}`);
+                        router.push(`/${data.username}`);
                     } else {
                         console.log("Profile not found. Show form.");
                     }

@@ -1,5 +1,4 @@
 "use client";
-
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import { useParams } from "next/navigation";
@@ -28,6 +27,7 @@ export default function ProfilePage() {
 
         const data = await res.json();
         setProfile(data);
+
       } catch (err) {
         console.error("Fetch error:", err);
         setError("Failed to load profile");
@@ -48,7 +48,7 @@ export default function ProfilePage() {
       <div className="max-w-2xl w-full bg-white rounded-3xl shadow-lg p-10 flex flex-col items-center">
         <div className="relative w-32 h-32 mb-6">
           <Image
-            src={profile.profileImage || profilePlaceholder}
+            src={profile.profileImage || "@/public/profilePlaceholder"}
             alt="Profile Picture"
             width={128}
             height={128}
