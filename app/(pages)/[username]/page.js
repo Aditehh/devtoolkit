@@ -1,6 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { useParams } from "next/navigation";
 import profilePlaceholder from "@/public/profileplaceholder.png";
 
@@ -69,7 +70,11 @@ export default function ProfilePage() {
             Want to edit your profile? Go to settings
           </p>
           <button className="bg-indigo-600 hover:bg-indigo-700 text-white font-medium px-6 py-3 rounded-xl transition">
+            <Link 
+            href={"/settings"}
+            >
             Settings
+            </Link>
           </button>
         </div>
 

@@ -9,7 +9,7 @@ import { useParams } from "next/navigation";
 import { ChevronDown } from "lucide-react";
 
 export default function Navbar() {
-  const { username } =  useParams();
+  const { username } = useParams();
   const { data: session, status } = useSession();
   const router = useRouter();
   const [profile, setProfile] = useState(null);
@@ -17,32 +17,6 @@ export default function Navbar() {
   const dropdownRef = useRef(null);
 
   // Fetch profile data
-  // useEffect(() => {
-  //   // if (status === "authenticated" && session?.user?.email) {
-  //   const fetchProfile = async () => {
-  //     try {
-  //       const res = await fetch(`/api/profile/${username}`, {
-  //         method: "GET",
-  //         headers: { "Content-Type": "application/json" },
-  //         cache: "no-store",
-  //       });
-
-  //       if (!res.ok) {
-  //         console.error("Error fetching profile:", await res.text());
-  //         return;
-  //       }
-
-  //       const data = await res.json();
-  //       setProfile(data);
-  //     } catch (err) {
-  //       console.error("Fetch error:", err);
-  //     }
-  //   };
-
-  //   fetchProfile();
-  //   // }
-  // }, [session, status]);
-
 
   useEffect(() => {
     async function fetchProfile() {
@@ -65,8 +39,6 @@ export default function Navbar() {
       } catch (err) {
         console.error("Fetch error:", err);
         setError("Failed to load profile");
-      } finally {
-        // setLoading(false);
       }
     }
 
@@ -107,13 +79,7 @@ export default function Navbar() {
               onClick={() => setOpen(!open)}
               className="flex items-center gap-2 rounded-full bg-white/70 border border-slate-200 px-3 py-1.5 shadow-sm hover:shadow-md hover:bg-white transition-all duration-200"
             >
-              <Image
-                src={profile.profileImage || "@/public/profilePlaceholder"}
-                alt="Profile"
-                width={32}
-                height={32}
-                className="rounded-full object-cover"
-              />
+              
 
               <ChevronDown className={`w-4 h-4 text-slate-500 transition-transform duration-200 ${open ? "rotate-180" : ""}`} />
             </button>
