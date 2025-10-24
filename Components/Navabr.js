@@ -20,6 +20,8 @@ export default function Navbar() {
 
   useEffect(() => {
     async function fetchProfile() {
+
+
       try {
         const res = await fetch(`/api/profile/${username}`, {
           method: "GET",
@@ -79,12 +81,12 @@ export default function Navbar() {
               onClick={() => setOpen(!open)}
               className="flex items-center gap-2 rounded-full bg-white/70 border border-slate-200 px-3 py-1.5 shadow-sm hover:shadow-md hover:bg-white transition-all duration-200"
             >
-              
+
 
               <ChevronDown className={`w-4 h-4 text-slate-500 transition-transform duration-200 ${open ? "rotate-180" : ""}`} />
             </button>
 
-            {open && (
+            {open && profile && (
               <div className="absolute right-0 mt-2 w-44 bg-white/90 backdrop-blur-md border border-slate-200/60 rounded-2xl shadow-lg py-2 animate-fadeIn">
                 <Link href={`/${profile.username || ""}`}
                   className="block px-4 py-2 text-slate-700 hover:bg-slate-100 rounded-lg transition">
