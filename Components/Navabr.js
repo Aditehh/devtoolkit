@@ -9,7 +9,7 @@ import { useParams } from "next/navigation";
 import { ChevronDown } from "lucide-react";
 
 export default function Navbar() {
-  const { username } = useParams();
+  const { username } =  useParams();
   const { data: session, status } = useSession();
   const router = useRouter();
   const [profile, setProfile] = useState(null);
