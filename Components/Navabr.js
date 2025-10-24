@@ -5,9 +5,11 @@ import { useSession, signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
+import { useParams } from "next/navigation";
 import { ChevronDown } from "lucide-react";
 
 export default function Navbar() {
+  const { username } = useParams();
   const { data: session, status } = useSession();
   const router = useRouter();
   const [profile, setProfile] = useState(null);
@@ -64,7 +66,7 @@ export default function Navbar() {
         console.error("Fetch error:", err);
         setError("Failed to load profile");
       } finally {
-        setLoading(false);
+        // setLoading(false);
       }
     }
 
