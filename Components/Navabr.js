@@ -15,31 +15,61 @@ export default function Navbar() {
   const dropdownRef = useRef(null);
 
   // Fetch profile data
+  // useEffect(() => {
+  //   // if (status === "authenticated" && session?.user?.email) {
+  //   const fetchProfile = async () => {
+  //     try {
+  //       const res = await fetch(`/api/profile/${username}`, {
+  //         method: "GET",
+  //         headers: { "Content-Type": "application/json" },
+  //         cache: "no-store",
+  //       });
+
+  //       if (!res.ok) {
+  //         console.error("Error fetching profile:", await res.text());
+  //         return;
+  //       }
+
+  //       const data = await res.json();
+  //       setProfile(data);
+  //     } catch (err) {
+  //       console.error("Fetch error:", err);
+  //     }
+  //   };
+
+  //   fetchProfile();
+  //   // }
+  // }, [session, status]);
+
+
   useEffect(() => {
-    if (status === "authenticated" && session?.user?.email) {
-      const fetchProfile = async () => {
-        try {  
-          const res = await fetch(`/api/profile?email=${session.user.email}`, {
-            method: "GET",
-            headers: { "Content-Type": "application/json" },
-            cache: "no-store",
-          });
+    async function fetchProfile() {
+      try {
+        const res = await fetch(`/api/profile/${username}`, {
+          method: "GET",
+          headers: { "Content-Type": "application/json" },
+          cache: "no-store", // ensures fresh fetch each time
+        });
 
-          if (!res.ok) {
-            console.error("Error fetching profile:", await res.text());
-            return;
-          }
-
-          const data = await res.json();
-          setProfile(data);
-        } catch (err) {
-          console.error("Fetch error:", err);
+        if (!res.ok) {
+          const errorText = await res.text();
+          console.error("Response error:", errorText);
+          throw new Error(`HTTP error! status: ${res.status}`);
         }
-      };
 
-      fetchProfile();
+        const data = await res.json();
+        setProfile(data);
+
+      } catch (err) {
+        console.error("Fetch error:", err);
+        setError("Failed to load profile");
+      } finally {
+        setLoading(false);
+      }
     }
-  }, [session, status]);
+
+    if (username) fetchProfile();
+  }, [username]);
 
 
 
@@ -76,7 +106,7 @@ export default function Navbar() {
               className="flex items-center gap-2 rounded-full bg-white/70 border border-slate-200 px-3 py-1.5 shadow-sm hover:shadow-md hover:bg-white transition-all duration-200"
             >
               <Image
-                src={profile?.profileImage || "/default-avatar.png"}
+                src={profile.profileImage || "@/public/profilePlaceholder"}
                 alt="Profile"
                 width={32}
                 height={32}
@@ -88,8 +118,9 @@ export default function Navbar() {
 
             {open && (
               <div className="absolute right-0 mt-2 w-44 bg-white/90 backdrop-blur-md border border-slate-200/60 rounded-2xl shadow-lg py-2 animate-fadeIn">
-                <Link href={`/${profile?.username || ""}`} className="block px-4 py-2 text-slate-700 hover:bg-slate-100 rounded-lg transition">
-                  {profile?.username || "Profile"}
+                <Link href={`/${profile.username || ""}`}
+                  className="block px-4 py-2 text-slate-700 hover:bg-slate-100 rounded-lg transition">
+                  {profile.username || "Profile"}
                 </Link>
 
                 <Link href="/settings" className="block px-4 py-2 text-slate-700 hover:bg-slate-100 rounded-lg transition">
